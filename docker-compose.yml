@@ -9,7 +9,6 @@ services:
       POSTGRES_PASSWORD: mypass
   web:
     build: .
-    user: "1000"
     environment:
       DATABASE_URL: "postgres://user:mypass@dbhost/"
     links:
