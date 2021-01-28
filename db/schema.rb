@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_155728) do
+ActiveRecord::Schema.define(version: 2021_01_28_183150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -47,12 +47,14 @@ ActiveRecord::Schema.define(version: 2021_01_28_155728) do
     t.uuid "course_id", null: false
     t.decimal "full_price", precision: 10, scale: 2, null: false
     t.decimal "price_with_discount", precision: 10, scale: 2, null: false
-    t.decimal "discount_percentage", precision: 3, scale: 2, null: false
+    t.decimal "discount_percentage", precision: 5, null: false
     t.date "start_date", null: false
     t.string "enrollment_semester", null: false
     t.boolean "enabled", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "campus_id"
+    t.index ["campus_id"], name: "index_offers_on_campus_id"
     t.index ["course_id"], name: "index_offers_on_course_id"
   end
 
@@ -65,5 +67,6 @@ ActiveRecord::Schema.define(version: 2021_01_28_155728) do
   end
 
   add_foreign_key "campus", "universities"
+  add_foreign_key "offers", "campus", column: "campus_id"
   add_foreign_key "offers", "courses"
 end
