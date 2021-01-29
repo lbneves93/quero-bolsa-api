@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CoursesController, type: :request do
-  describe 'GET #index' do
+  describe 'GET /courses' do
     let!(:first_university) { create(:university, name: 'PUC') }
     let!(:first_course) { create(:course, kind: 'presential', level: 'bachelor', shift: 'morning') }
     let!(:second_course) { create(:course, kind: 'distance learning', level: 'bachelor', shift: 'night') }
