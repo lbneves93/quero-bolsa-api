@@ -1,7 +1,9 @@
 class CoursesController < ApplicationController
+  before_action :filter_params
+
   def index
     courses = Course.includes(campus: :university)
-                    .where(courses_params)
+                    .where(@courses_params)
                     .as_json(
                             only: %i[name kind level shift], 
                             include: { 
@@ -20,7 +22,11 @@ class CoursesController < ApplicationController
 
   private
 
-  def courses_params
-    params.permit(:kind, :level, :shift, university: :name)
+  def filter_params
+    begin
+      @courses_params = params.permit(:kind, :level, :shift, university: :name)
+    rescue ActionController::UnpermittedParameters => message
+      render status: :bad_request, json: { error: message }
+    end
   end
 end

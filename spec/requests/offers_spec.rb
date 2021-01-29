@@ -21,7 +21,7 @@ RSpec.describe OffersController, type: :request do
 
     before do
       get(offers_path, params: params)
-      @response_body = JSON.parse(response.body, symbolize_names: true)
+      @response_body = JSON.parse(response.body, symbolize_names: true) 
     end
 
     it 'returns http success' do
@@ -125,6 +125,20 @@ RSpec.describe OffersController, type: :request do
         expect(@response_body.first[:price_with_discount]).to eq(third_offer.price_with_discount.to_s)
         expect(@response_body.second[:price_with_discount]).to eq(first_offer.price_with_discount.to_s)
         expect(@response_body.third[:price_with_discount]).to eq(second_offer.price_with_discount.to_s)
+      end
+    end
+
+    context 'with invalid price_with_discount order value' do
+      let!(:params) { { price_with_discount: :invalid } }
+      it 'returns http bad_request' do
+        expect(response).to have_http_status(:bad_request) 
+      end
+    end
+
+    context 'with invalid param' do
+      let!(:params) { { invalid_param: :invalid_value } }
+      it 'returns http bad_request' do
+        expect(response).to have_http_status(:bad_request) 
       end
     end
   end

@@ -82,5 +82,12 @@ RSpec.describe CoursesController, type: :request do
         expect(@response_body.first[:name]).to eq(second_course.name)
       end
     end
+
+    context 'with invalid param' do
+      let!(:params) { { invalid_param: :invalid_value } }
+      it 'returns http bad_request' do
+        expect(response).to have_http_status(:bad_request) 
+      end
+    end
   end
 end
