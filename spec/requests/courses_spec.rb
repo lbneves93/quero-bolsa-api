@@ -13,7 +13,7 @@ RSpec.describe CoursesController, type: :request do
     let!(:second_university) { create(:university, name: 'Inatel') }
     let!(:third_course) { create(:course, kind: 'presential', level: 'technologist', shift: 'morning') }
     let!(:third_campus) { create(:campus, university: second_university, courses: [third_course]) }
-    
+
     let(:params) { nil }
 
     before do
@@ -31,21 +31,21 @@ RSpec.describe CoursesController, type: :request do
 
     it 'returns correct json structure' do
       expect(@response_body.first).to include(
-          name: first_course.name,
-          kind: first_course.kind,
-          level: first_course.level,
-          shift: first_course.shift,
-          campus: [
-            {
-              name: first_campus.name,
-              city: first_campus.city,
-              university: {
-                name: first_university.name,
-                score: first_university.score.to_s,
-                logo_url: first_university.logo_url
-              }
+        name: first_course.name,
+        kind: first_course.kind,
+        level: first_course.level,
+        shift: first_course.shift,
+        campus: [
+          {
+            name: first_campus.name,
+            city: first_campus.city,
+            university: {
+              name: first_university.name,
+              score: first_university.score.to_s,
+              logo_url: first_university.logo_url
             }
-          ]
+          }
+        ]
       )
     end
 
@@ -86,7 +86,7 @@ RSpec.describe CoursesController, type: :request do
     context 'with invalid param' do
       let!(:params) { { invalid_param: :invalid_value } }
       it 'returns http bad_request' do
-        expect(response).to have_http_status(:bad_request) 
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

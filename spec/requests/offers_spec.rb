@@ -5,23 +5,35 @@ require 'rails_helper'
 RSpec.describe OffersController, type: :request do
   describe 'GET /offers' do
     let!(:first_university) { create(:university, name: 'PUC') }
-    let!(:first_course) { create(:course, name: 'Computer Science', kind: 'presential', level: 'bachelor', shift: 'morning') }
-    let!(:second_course) { create(:course, name: 'Administration', kind: 'distance learning', level: 'bachelor', shift: 'night') }
-    let!(:first_campus) { create(:campus, city: 'Poços de Caldas', university: first_university, courses: [first_course]) }
-    let!(:second_campus) { create(:campus, city: 'São José dos Campos', university: first_university, courses: [second_course]) }
-    let!(:first_offer) { create(:offer, price_with_discount: 1950.30, campus: first_campus, course: first_course)}
-    let!(:second_offer) { create(:offer, price_with_discount: 1970.10, campus: second_campus, course: second_course)}
+    let!(:first_course) do
+      create(:course, name: 'Computer Science', kind: 'presential', level: 'bachelor', shift: 'morning')
+    end
+    let!(:second_course) do
+      create(:course, name: 'Administration', kind: 'distance learning', level: 'bachelor', shift: 'night')
+    end
+    let!(:first_campus) do
+      create(:campus, city: 'Poços de Caldas', university: first_university, courses: [first_course])
+    end
+    let!(:second_campus) do
+      create(:campus, city: 'São José dos Campos', university: first_university, courses: [second_course])
+    end
+    let!(:first_offer) { create(:offer, price_with_discount: 1950.30, campus: first_campus, course: first_course) }
+    let!(:second_offer) { create(:offer, price_with_discount: 1970.10, campus: second_campus, course: second_course) }
 
     let!(:second_university) { create(:university, name: 'Inatel') }
-    let!(:third_course) { create(:course, name: 'Computer Science', kind: 'presential', level: 'technologist', shift: 'morning') }
-    let!(:third_campus) { create(:campus, city: 'São José dos Campos', university: second_university, courses: [third_course]) }
-    let!(:third_offer) { create(:offer, price_with_discount: 1550.00, campus: third_campus, course: third_course)}
-    
+    let!(:third_course) do
+      create(:course, name: 'Computer Science', kind: 'presential', level: 'technologist', shift: 'morning')
+    end
+    let!(:third_campus) do
+      create(:campus, city: 'São José dos Campos', university: second_university, courses: [third_course])
+    end
+    let!(:third_offer) { create(:offer, price_with_discount: 1550.00, campus: third_campus, course: third_course) }
+
     let(:params) { nil }
 
     before do
       get(offers_path, params: params)
-      @response_body = JSON.parse(response.body, symbolize_names: true) 
+      @response_body = JSON.parse(response.body, symbolize_names: true)
     end
 
     it 'returns http success' do
@@ -34,27 +46,27 @@ RSpec.describe OffersController, type: :request do
 
     it 'returns correct json structure' do
       expect(@response_body.first).to include(
-          full_price: first_offer.full_price.to_s,
-          price_with_discount: first_offer.price_with_discount.to_s,
-          discount_percentage: first_offer.discount_percentage,
-          start_date: first_offer.start_date.to_s,
-          enrollment_semester: first_offer.enrollment_semester,
-          enabled: first_offer.enabled,
-          course: {
-            name: first_course.name,
-            kind: first_course.kind,
-            level: first_course.level,
-            shift: first_course.shift
-          },
-          university: {
-            name: first_university.name,
-            score: first_university.score.to_s,
-            logo_url: first_university.logo_url
-          }, 
-          campus: {
-              name: first_campus.name,
-              city: first_campus.city
-          } 
+        full_price: first_offer.full_price.to_s,
+        price_with_discount: first_offer.price_with_discount.to_s,
+        discount_percentage: first_offer.discount_percentage,
+        start_date: first_offer.start_date.to_s,
+        enrollment_semester: first_offer.enrollment_semester,
+        enabled: first_offer.enabled,
+        course: {
+          name: first_course.name,
+          kind: first_course.kind,
+          level: first_course.level,
+          shift: first_course.shift
+        },
+        university: {
+          name: first_university.name,
+          score: first_university.score.to_s,
+          logo_url: first_university.logo_url
+        },
+        campus: {
+          name: first_campus.name,
+          city: first_campus.city
+        }
       )
     end
 
@@ -131,14 +143,14 @@ RSpec.describe OffersController, type: :request do
     context 'with invalid price_with_discount order value' do
       let!(:params) { { price_with_discount: :invalid } }
       it 'returns http bad_request' do
-        expect(response).to have_http_status(:bad_request) 
+        expect(response).to have_http_status(:bad_request)
       end
     end
 
     context 'with invalid param' do
       let!(:params) { { invalid_param: :invalid_value } }
       it 'returns http bad_request' do
-        expect(response).to have_http_status(:bad_request) 
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

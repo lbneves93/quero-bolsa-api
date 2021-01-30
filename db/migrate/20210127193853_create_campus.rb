@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCampus < ActiveRecord::Migration[6.1]
   def change
     create_table :campus, id: :uuid do |t|
