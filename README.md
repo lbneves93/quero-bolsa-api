@@ -2,6 +2,8 @@
 
 Esta aplicação é uma API com a finalidade de realização de um teste na empresa Quero Educação.
 
+**Aplicação no Heroku:** <https://quero-bolsa-api.herokuapp.com/> 
+
 ### Tecnologias Utilizadas 
 * Ruby 3.0
 * Rails 6.1.1
