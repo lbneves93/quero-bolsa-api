@@ -8,7 +8,8 @@ class ApplicationController < ActionController::API
   end
 
   def encode_token(payload)
-    JWT.encode(payload, Rails.application.credentials[Rails.env.to_sym][:jwt_secret].to_s)
+    
+    JWT.encode(payload, Rails.application.credentials.dig(Rails.env.to_sym, :jwt_secret).to_s)
   end
 
   def auth_header
@@ -20,7 +21,7 @@ class ApplicationController < ActionController::API
 
     token = auth_header.split(' ')[1]
     begin
-      JWT.decode(token, Rails.application.credentials[Rails.env.to_sym][:jwt_secret].to_s, true, algorithm: 'HS256')
+      JWT.decode(token, Rails.application.credentials.dig(Rails.env.to_sym, :jwt_secret).to_s, true, algorithm: 'HS256')
     rescue JWT::DecodeError
       nil
     end
