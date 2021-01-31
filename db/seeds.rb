@@ -21,4 +21,7 @@ unless Rails.env.production?
       FactoryBot.create(:offer, campus: campus, course: course)
     end
   end
+
+  p 'Creating Admin User...'
+  User.create(username: 'admin', password: '123456', age: 28)
 end

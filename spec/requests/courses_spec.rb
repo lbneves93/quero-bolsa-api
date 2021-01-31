@@ -15,9 +15,10 @@ RSpec.describe CoursesController, type: :request do
     let!(:third_campus) { create(:campus, university: second_university, courses: [third_course]) }
 
     let(:params) { nil }
+    let(:user) { create(:user, username: 'admin', password: '123456', age: 28) }
 
     before do
-      get(courses_path, params: params)
+      get(courses_path, params: params, headers: authenticated_header(user))
       @response_body = JSON.parse(response.body, symbolize_names: true)
     end
 
@@ -87,6 +88,13 @@ RSpec.describe CoursesController, type: :request do
       let!(:params) { { invalid_param: :invalid_value } }
       it 'returns http bad_request' do
         expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context 'without authorization' do
+      it 'returns unauthorized response' do
+        get(courses_path)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
