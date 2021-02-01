@@ -7,9 +7,8 @@ class ApplicationController < ActionController::API
     render html: '<center><h1>Bem vindo a Quero Bolsa API!</h1></center>'.html_safe
   end
 
-  def encode_token(payload)
-    
-    JWT.encode(payload, Rails.application.credentials.dig(Rails.env.to_sym, :jwt_secret).to_s)
+  def encode_token(payload) 
+    JWT.encode(payload, ENV['JWT_SECRET'].to_s)
   end
 
   def auth_header
@@ -21,7 +20,7 @@ class ApplicationController < ActionController::API
 
     token = auth_header.split(' ')[1]
     begin
-      JWT.decode(token, Rails.application.credentials.dig(Rails.env.to_sym, :jwt_secret).to_s, true, algorithm: 'HS256')
+      JWT.decode(token, ENV['JWT_SECRET'].to_s, true, algorithm: 'HS256')
     rescue JWT::DecodeError
       nil
     end
