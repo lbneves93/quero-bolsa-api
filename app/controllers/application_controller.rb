@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
     render html: '<center><h1>Bem vindo a Quero Bolsa API!</h1></center>'.html_safe
   end
 
-  def encode_token(payload) 
+  def encode_token(payload)
     JWT.encode(payload, ENV['JWT_SECRET'].to_s)
   end
 

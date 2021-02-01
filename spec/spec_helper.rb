@@ -13,7 +13,7 @@ RSpec.configure do |config|
 end
 
 def authenticated_header(user)
-  secret_key = Rails.application.credentials[Rails.env.to_sym][:jwt_secret].to_s
+  secret_key = ENV['JWT_SECRET'].to_s
   token = JWT.encode({ user_id: user.id }, secret_key)
   { 'Authorization': "Bearer #{token}" }
 end

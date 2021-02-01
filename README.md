@@ -2,7 +2,9 @@
 
 Esta aplicação é uma API com a finalidade de realização de um teste na empresa Quero Educação.
 
-**Aplicação no Heroku:** <https://quero-bolsa-api.herokuapp.com/> 
+**Aplicação no Heroku:** <https://quero-bolsa-api.herokuapp.com/>  
+**API username:** admin  
+**API password:** 123456
 
 ### Tecnologias Utilizadas 
 * Ruby 3.0
@@ -10,6 +12,7 @@ Esta aplicação é uma API com a finalidade de realização de um teste na empr
 * Docker 19.03.12
 * Docker Compose 1.24.1 
 * Rspec 4.0.2 (TDD)
+* Rubocop 1.9 (Analise de codigo)
 * Postgresql 13.1
 
 ### Utilizando Docker Container
@@ -32,7 +35,7 @@ $ docker-compose run --rm web bash
 ```
 2. Criando banco no ambiente de desenvolvimento:
 ```
-$ rails db:create db:migrate db:seed
+$ rails db:setup
 ```
 3. Criando banco no ambiente de teste:
 ```
@@ -48,7 +51,41 @@ $ docker-compose run --rm web bash
 ```
 $ rspec
 ```
+### Rodando o Rubocop
+
+1. Acesse o container via terminal:
+```
+$ docker-compose run --rm web bash
+```
+2. Rodando rubocop:
+```
+$ rubocop
+```
 ### Utilizando a API
+##### <span style="color:green;margin:010px">[POST]</span><span style=color:blue> Login</span>
+* Autenticando na API:
+>Request:
+```
+URL: http://localhost:3000/login
+Method: POST
+Body: { "username": "admin", "password": "123456" }
+Headers: Content-Type: application/json
+```
+>Response:
+~~~json
+{
+  "user": {
+    "id": "ea9f2245-bca3-46e0-a9fd-59403b826feb",
+    "username": "admin"
+  },
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWE5ZjIyNDUtYmNhMy00NmUwLWE5ZmQtNTk0MDNiODI2ZmViIn0.WjWRQ9KvaUyjRycr506Erz8QwuJmoEPWeB8otkTUe6E"
+}
+~~~
+* Utilizando o token JWT:
+>Adicionar em todas as requisições o header:
+```
+Authorization: Bearer #{SEU_TOKEN}
+```
 ##### <span style="color:green;margin:010px">[GET]</span><span style=color:blue> Listando cursos</span>
 * Listando todos os cursos:
 >Request:
